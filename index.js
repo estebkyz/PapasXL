@@ -60,7 +60,7 @@ async function startBot() {
         version,
         auth: state,
         printQRInTerminal: false,
-        browser: ['Papas XL Bot', 'Chrome', '1.0.0'],
+        browser: ['Windows', 'Chrome', '122.0.6261.129'],
         logger: {
             level: 'silent',
             info: () => { }, warn: () => { }, error: () => { }, debug: () => { }, trace: () => { }, fatal: () => { },
@@ -125,8 +125,17 @@ async function startBot() {
                 const respuesta = procesarMensaje(msg, jid);
 
                 if (respuesta === null) continue;
+                
+                // --- Simulación de Comportamiento Humano ---
+                // 1. Tiempo de "lectura" aleatorio
+                const msLectura = Math.floor(Math.random() * (CONFIG.delayLectura[1] - CONFIG.delayLectura[0] + 1)) + CONFIG.delayLectura[0];
+                await new Promise(r => setTimeout(r, msLectura));
 
-                await new Promise(r => setTimeout(r, CONFIG.delayRespuesta));
+                // 2. Tiempo de "escritura" proporcional al largo del mensaje
+                const msPorLetra = Math.floor(Math.random() * (CONFIG.delayEscrituraPorLetra[1] - CONFIG.delayEscrituraPorLetra[0] + 1)) + CONFIG.delayEscrituraPorLetra[0];
+                const msEscritura = Math.min(respuesta.length * msPorLetra, 10000); // Tope de 10 segs para no ser eterno
+                await new Promise(r => setTimeout(r, msEscritura));
+
                 await sock.sendMessage(jid, { text: respuesta });
 
                 log(`📨 ${jid.split('@')[0]} [${tipo}] → "${texto.slice(0, 40)}${texto.length > 40 ? '…' : ''}"`);

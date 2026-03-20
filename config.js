@@ -25,7 +25,8 @@ export const CONFIG = {
     ],
 
     maxLongitudMensaje: 500,
-    delayRespuesta: 900,
+    delayLectura: [1000, 3000], // Rango de tiempo para "leer" el mensaje
+    delayEscrituraPorLetra: [50, 100], // Ms por cada letra del mensaje
     sessionTimeout: 15 * 60 * 1000,
 
     // 'auto' | 'abierto' | 'cerrado' | 'ocupado'
